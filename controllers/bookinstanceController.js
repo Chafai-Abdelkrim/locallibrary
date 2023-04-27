@@ -1,5 +1,5 @@
 const BookInstance = require("../models/bookinstance");
-const asyncHanler = require("express-async-handler");
+const asyncHandler = require("express-async-handler");
 
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: BookInstance list");
