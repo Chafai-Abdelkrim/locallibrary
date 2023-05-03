@@ -1,0 +1,16 @@
+<%- include('layout_top') %>
+<h1><%= title %></h1>
+<form action="" method="POST">
+    <div class="form-group">
+        <label for="name">Genre: </label>
+        <input id="name" type="text" class="form-control" name="name" placeholder="Fantasy, Poetry etc..." value='<%= undefined===genre ? '' : genre.name %>' />
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+</form>
+<% if(errors?.[Symbol.iterator]){ %>
+    <ul>
+        <% errors.forEach(error => { %>
+            <li class="text-danger"><%= error.msg %></li>
+    </ul>
+<% })} %>
+<%- include('layout_bottom') %>
