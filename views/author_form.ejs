@@ -1,0 +1,24 @@
+<%- include('layout_top') %>
+<h1><%= title %></h1>
+<form action="" method="POST">
+    <div class="form-group">
+        <label for="first_name">First Name: </label>
+        <input name="first_name" id="first_name" class="form-control" type="text" placeholder="First Name" required value='<%= undefined===author ? '' : author.first_name %>' />
+        <label for="family_name">Family Name: </label>
+        <input name="family_name" id="family_name" class="form-control" type="text" placeholder="Family name" required="true" value='<%= undefined===author ? '' : author.family_name %>' />
+    </div>
+    <div class="form-group">
+        <label for="date_of_birth">Date of Birth: </label>
+        <input id="date_of_birth" name="date_of_birth" class="form-control" type="date" value='<%= undefined===author ? '' : author.date_of_birth %>' />
+        <label for="date_of_death">Date of death:</label>
+        <input id="date_of_death" class="form-control" type="date" name="date_of_death" value=<%= undefined===author ? '' : author.date_of_death %> />
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<% if(errors?.[Symbol.iterator]){ %>
+    <ul>
+        <% errors.forEach(error => { %>
+            <li class="text-danger"><%= error.msg %></li>
+    </ul>
+<% })} %>
+<%- include('layout_bottom') %>
