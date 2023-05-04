@@ -1,0 +1,42 @@
+<%- include('layout_top') %>
+<h1><%= title %></h1>
+<form action="" method="POST">
+    <div class="form-group">
+        <label for="book">Book: </label>
+        <select name="book" id="book" class="form-control" placeholder="Select Book" required >
+            <% book_list.sort(function(a, b) {
+                let textA = a.title.toUpperCase();
+                let textB = b.title.toUpperCase();
+                return (textA < textB) ? -1 : (textA >textB) ? 1 : 0;
+            }); %>
+            <% book_list.forEach(book => { %>
+                <option value=<%= book._id %> selected=<%= selected_book===book._id.toString() ? 'selected' : false %>><%= book.title %></option>
+            <% }); %>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="imprint">Imprint: </label>
+        <input type="text" id="imprint" name="imprint" class="form-control" placeholder="Publisher and date info" required value=<%= undefined===bookinstance ? '' : bookinstance.imprint %>>
+    </div>
+    <div class="form-group">
+        <label for="due_back">Date when book available:</label>
+        <input type="date" name="due_back" id="due_back" class="form-control" required value=<%= undefined===bookinstance ? '' : bookinstance.due_back %> >
+    </div>
+    <div class="form-group">
+        <label for="status">Status: </label>
+        <select name="status" id="status" class="form-control" required>
+            <option value="Maintenance">Maintenance</option>
+            <option value="Available">Available</option>
+            <option value="Loaned">Loaned</option>
+            <option value="Reserved">Reserved</option>
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<% if(errors?.[Symbol.iterator]){ %>
+    <ul>
+        <% errors.forEach(error => { %>
+            <li class="text-danger"><%= error.msg %></li>
+    </ul>
+<% })} %>
+<%- include('layout_bottom') %>
