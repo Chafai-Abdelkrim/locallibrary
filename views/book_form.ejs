@@ -3,11 +3,11 @@
 <form action="" method="POST">
     <div class="form-group">
         <label for="title">Title:</label>
-        <input id='title' class="form-control" type="text" placeholder="Name of book" name="title" required="true" value="<%= undefined===book ? '' : book.title %>">
+        <input id='title' class="form-control" type="text" placeholder="Name of book" name="title" required value="<%= undefined===book ? '' : book.title %>">
     </div>
     <div class="form-group">
         <label for="author">Author:</label>
-        <select name="author" id="author" class="form-control" type="select" placeholder="Select author" name="author" required="true">
+        <select name="author" id="author" class="form-control" type="select" placeholder="Select author" required>
             <% authors.sort(function(a, b) {let textA = a.family_name.toUpperCase(); let textB = b.family_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}); %>
             <% for(const author of authors){ if(book){ %>
                 <option value=<%=author._id%> selected=<%=author._id.toString()===book.author.id.toString() ? 'selected' : false%>><%=author.name%></option>
@@ -18,11 +18,11 @@
     </div>
     <div class="form-group">
         <label for="summary">Summary:</label>
-        <input id="summary" class="form-control" type="textarea" placeholder="Summary" name="summary" required="true"><%=undefined===book ? '' : book.summary%>
+        <input id="summary" class="form-control" type="textarea" placeholder="Summary" name="summary" required><%=undefined===book ? '' : book.summary%>
     </div>
     <div class="form-group">
         <label for="isbn">ISBN:</label>
-        <input id="isbn" class="form-control" type="text" placeholder="ISBN13" name="isbn" required="true" value=<%=undefined===book ? '' : book.isbn%>>
+        <input id="isbn" class="form-control" type="text" placeholder="ISBN13" name="isbn" required value=<%=undefined===book ? '' : book.isbn%>>
     </div>
     <div class="form-group">
         <label>Genre:
@@ -38,8 +38,8 @@
 </form>
 <% if(errors?.[Symbol.iterator]){ %>
     <ul>
-        <%for(const error of errors){ %>
-            <li><%=error.msg%></li>
+        <% errors.forEach(error => { %>
+            <li class="text-danger"><%= error.msg %></li>
     </ul>
-<% }} %>
+<% })} %>
 <%- include('layout_bottom') %>
