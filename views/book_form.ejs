@@ -7,18 +7,18 @@
     </div>
     <div class="form-group">
         <label for="author">Author:</label>
-        <select name="author" id="author" class="form-control" type="select" placeholder="Select author" required>
+        <select name="author" id="author" class="form-control" required>
             <% authors.sort(function(a, b) {let textA = a.family_name.toUpperCase(); let textB = b.family_name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;}); %>
-            <% for(const author of authors){ if(book){ %>
-                <option value=<%=author._id%> selected=<%=author._id.toString()===book.author.id.toString() ? 'selected' : false%>><%=author.name%></option>
+            <% authors.forEach(author => { if(book){ %>
+                <option value=<%=author._id%> selected=<%=author._id.toString()===book.author.id.toString() ? "selected" : false%>><%=author.name%></option>
             <% } else { %>
                 <option value="<%=author._id%>"><%=author.name%></option>
-            <% }} %>
+            <% }}); %>
         </select>
     </div>
     <div class="form-group">
         <label for="summary">Summary:</label>
-        <input id="summary" class="form-control" type="textarea" placeholder="Summary" name="summary" required><%=undefined===book ? '' : book.summary%>
+        <input id="summary" class="form-control" type="textarea" placeholder="Summary" name="summary" required value="<%=undefined===book ? '' : book.summary%>">
     </div>
     <div class="form-group">
         <label for="isbn">ISBN:</label>
