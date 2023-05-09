@@ -102,9 +102,66 @@ exports.bookinstance_delete_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.bookinstance_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance update GET");
+  const [bookinstance, books] = await Promise.all([
+    BookInstance.findById(req.params.id).populate("book").exec(),
+    Book.find().exec(),
+  ]);
+
+  if (bookinstance === null) {
+    var err = new Error("Book copy not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("bookinstance_form", {
+    title: "Update BookInstance",
+    book_list: books,
+    selected_book: bookinstance.book._id,
+    bookinstance: bookinstance,
+    errors: [],
+  });
 });
 
-exports.bookinstance_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: BookInstance update POST");
-});
+exports.bookinstance_update_post = [
+  body("book", "Book must be specified").trim().isLength({ min: 1 }).escape(),
+  body("imprint", "Imprint must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("status").escape(),
+  body("due_back", "Invalid date")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
+    const bookinstance = new BookInstance({
+      book: req.body.book,
+      imprint: req.body.imprint,
+      status: req.body.status,
+      due_back: req.body.due_back,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+      const books = await Book.find({}, "title").exec();
+
+      res.render("bookinstance_form", {
+        title: "Update BookInstance",
+        book_list: books,
+        selected_book: bookinstance.book._id,
+        bookinstance: bookinstance,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const thebookinstance = await BookInstance.findByIdAndUpdate(
+        req.params.id,
+        bookinstance,
+        {}
+      );
+      res.redirect(thebookinstance.url);
+    }
+  }),
+];
