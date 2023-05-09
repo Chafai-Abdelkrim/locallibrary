@@ -1,0 +1,10 @@
+<%- include('layout_top') %>
+<h1><%= title %>: <%=bookinstance._id%></h1>
+<p>Do you really want to delete this Book Instance?</p>
+<form action="" method="post">
+    <div class="form-group">
+        <input id='bookinstanceid' class="form-control" type="hidden" name="bookinstanceid" required value=<%=bookinstance._id%>>
+        <button class="btn btn-primary">Delete</button>
+    </div>
+</form>
+<%- include('layout_bottom') %>
