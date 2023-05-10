@@ -7,6 +7,8 @@ const mongoose = require("mongoose");
 const compression = require("compression");
 const helmet = require("helmet");
 
+require('dotenv').config();
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog");
@@ -14,7 +16,7 @@ const catalogRouter = require("./routes/catalog");
 const app = express();
 
 mongoose.set("strictQuery", false);
-const mongoDB = "mongodb+srv://admin:jk46294@cluster0.4i4dl3m.mongodb.net/local_library?retryWrites=true&w=majority";
+const mongoDB = process.env.MONGODB_URI;
 
 main().catch((err) => console.log(err));
 async function main() {
